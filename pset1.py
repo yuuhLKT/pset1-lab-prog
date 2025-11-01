@@ -128,7 +128,50 @@ class Imagem:
         return self.aplicar_kernel(kernel_nitido)
 
     def bordas(self):
-        raise NotImplementedError
+        # Define os kernels de Sobel para detecção de bordas
+        Kernel_x = [
+            [-1, 0, 1],
+            [-2, 0, 2],
+            [-1, 0, 1]
+        ]
+        Kernel_y = [
+            [-1, -2, -1],
+            [ 0,  0,  0],
+            [ 1,  2,  1]
+        ]
+        
+        # Cria uma nova imagem para armazenar o resultado
+        resultado = Imagem.nova(self.largura, self.altura)
+
+        # Define o deslocamento para o kernel (ambos kernels são 3x3, então o deslocamento é 1)
+        deslocamento = 1  # Para um kernel 3x3
+
+        # Interar sobre cada pixel da imagem
+        for y in range(self.altura):
+            for x in range(self.largura):
+
+                # Calcula os valores intermediários Ox e Oy para o pixel atual.
+                valor_ox = 0
+                valor_oy = 0
+
+                # Aplica os dois Kernels
+                for ky in range(3):
+                    for kx in range(3):
+                        px = x - deslocamento + kx
+                        py = y - deslocamento + ky
+                        pixel_valor = self.get_pixel(px, py)
+                        valor_ox += pixel_valor * Kernel_x[ky][kx]
+                        valor_oy += pixel_valor * Kernel_y[ky][kx]
+
+                # Combina os valores Ox e Oy para obter o valor final do pixel
+                valor_combinado = math.sqrt(valor_ox ** 2 + valor_oy ** 2)
+
+                # Garante que o valor final esteja entre 0 e 255
+                valor_final = max(0, min(255, round(valor_combinado)))
+
+                resultado.set_pixel(x, y, valor_final)
+
+        return resultado
 
     # Abaixo deste ponto estão utilitários para carregar, salvar e mostrar
     # as imagens, bem como para a realização de testes. Você deve ler as funções
@@ -282,21 +325,26 @@ if __name__ == '__main__':
     # sendo executados. Este é um bom lugar para gerar imagens, etc.
     
     ## INVERTIDA
-    # im = Imagem.carregar('test_images/Imagem colada.png')
-    # im.mostrar()
-    # im.invertida().mostrar()
+    im = Imagem.carregar('test_images/yuri.png')
+    im.mostrar()
+    im.invertida().mostrar()
 
     ## BORRADA
-    # im = Imagem.carregar('test_images/Imagem colada.png')
-    # im.mostrar()
-    # im.borrada(7).mostrar()
-    # img = Imagem.carregar('test_results/mushroom_blur_07.png')
-    # img.mostrar()
+    im = Imagem.carregar('test_images/yuri.png')
+    im.mostrar()
+    im.borrada(7).mostrar()
+    img = Imagem.carregar('test_results/mushroom_blur_07.png')
+    img.mostrar()
 
     ## FOCADA
-    im = Imagem.carregar('test_images/Imagem colada.png')
+    im = Imagem.carregar('test_images/yuri.png')
     im.mostrar()
     im.focada(11).mostrar()
+
+    ## BORDAS
+    im = Imagem.carregar('test_images/yuri.png')
+    im.mostrar()
+    im.bordas().mostrar()
     # O código a seguir fará com que as janelas de Imagem.mostrar
     # sejam exibidas corretamente, quer estejamos executando
     # interativamente ou não:
