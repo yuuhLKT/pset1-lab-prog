@@ -107,7 +107,25 @@ class Imagem:
         return self.aplicar_kernel(kernel)
 
     def focada(self, n):
-        raise NotImplementedError
+        # Cria um kernel de borrado n x n
+        kernel_borrado = self.criar_kernel_borrado(n)
+
+        # Cria o kernel nítido a partir do kernel de borrado
+        # A lógica é (2 * Identidade) - Borrado
+        # Começamos criando um kernel onde todos os valores são o negativo do valor do kernel de borrado
+        valor_negativo = -kernel_borrado[0][0]
+        kernel_nitido = [[valor_negativo for _ in range(n)] for _ in range(n)]
+
+        # Encontra o a coordenada do centro do kernel
+        centro = n // 2
+
+        # Adiciona 2 no centro do kernel nítido
+        # Isso corresponde a adicionar 2 * Identidade ao kernel (-Borrado)
+        # O valor central se torna 2 - valor do kernel de borrado
+        kernel_nitido[centro][centro] += 2
+
+        
+        return self.aplicar_kernel(kernel_nitido)
 
     def bordas(self):
         raise NotImplementedError
@@ -264,17 +282,21 @@ if __name__ == '__main__':
     # sendo executados. Este é um bom lugar para gerar imagens, etc.
     
     ## INVERTIDA
-    # im = Imagem.carregar('test_images/cat.png')
+    # im = Imagem.carregar('test_images/Imagem colada.png')
     # im.mostrar()
     # im.invertida().mostrar()
 
     ## BORRADA
-    # im = Imagem.carregar('test_images/mushroom.png')
+    # im = Imagem.carregar('test_images/Imagem colada.png')
     # im.mostrar()
     # im.borrada(7).mostrar()
     # img = Imagem.carregar('test_results/mushroom_blur_07.png')
     # img.mostrar()
-    pass
+
+    ## FOCADA
+    im = Imagem.carregar('test_images/Imagem colada.png')
+    im.mostrar()
+    im.focada(11).mostrar()
     # O código a seguir fará com que as janelas de Imagem.mostrar
     # sejam exibidas corretamente, quer estejamos executando
     # interativamente ou não:
