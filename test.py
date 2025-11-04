@@ -178,6 +178,20 @@ class TestFiltros(unittest.TestCase):
                                      "Cuidado para não modificar a imagem original!")
                     self.assertEqual(resultado,  esperado)
 
+    def test_focada2(self):
+        # Testa a nitidez usando a mesma imagem do 'test_borrada_1'
+        # A lógica é S = 2*I - B
+        # I = Imagem com 255 no centro e 0 no resto
+        # B = Imagem borrada(3), que é [28, 28, ..., 28] (do test_borrada_1).
+        im = pset1.Imagem(3, 3, [0, 0, 0,
+                                 0, 255, 0,
+                                 0, 0, 0])
+        resultado = im.focada(3)
+        esperado = pset1.Imagem(3, 3, [0, 0, 0,
+                                       0, 255, 0,
+                                       0, 0, 0])
+        self.assertEqual(resultado, esperado)
+
     def test_bordas(self):
         for nome_arquivo in ('mushroom', 'twocats', 'chess'):
             with self.subTest(f=nome_arquivo):
@@ -192,6 +206,22 @@ class TestFiltros(unittest.TestCase):
                                  "Cuidado para não modificar a imagem original!")
                 self.assertEqual(resultado,  esperado)
 
+
+    def test_bordas2(self):
+        # Testa uma imagem com uma borda horizontal
+        # [0, 0, 0]
+        # [0, 0, 0]
+        # [255, 255, 255]
+        # O kernel Ky deve detectar a borda na linha do meio (y=1)
+        im = pset1.Imagem(3, 3, [0, 0, 0,
+                                 0, 0, 0,
+                                 255, 255, 255])
+        resultado = im.bordas()
+        # A borda é detectada na linha logo *acima* da mudança
+        esperado = pset1.Imagem(3, 3, [0, 0, 0,
+                                       255, 255, 255,
+                                       255, 255, 255])
+        self.assertEqual(resultado, esperado)
 
 if __name__ == '__main__':
     res = unittest.main(verbosity=3, exit=False)
