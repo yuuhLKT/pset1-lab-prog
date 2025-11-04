@@ -2,10 +2,10 @@
 # Preencha seus dados e leia a declaração de honestidade abaixo. NÃO APAGUE
 # nenhuma linha deste comentário de seu código!
 #
-#    Nome completo: Yuri Luiz Kruger Torquato
-#    Matrícula: 202311567
+#    Nome completo: Yuri Luiz Kruger Torquato, Pedro Henrique Nascimento Souza
+#    Matrícula: 202311567, 202310960
 #    Turma: CC5N
-#    Email: yuri.luizkt@gmail.com
+#    Email: yuri.luizkt@gmail.com, pedrohenrique.nasci2020@gmail.com
 #
 # DECLARAÇÃO DE HONESTIDADE ACADÊMICA:
 # Eu afirmo que o código abaixo foi de minha autoria. Também afirmo que não
