@@ -90,6 +90,16 @@ class TestInvertida(unittest.TestCase):
                                        255, 127, 0, 127, 255])
         self.assertEqual(resultado, esperado)
 
+    def test_invertida_4(self):
+        im = pset1.Imagem(3, 3, [0, 50, 100,
+                                  150, 200, 250,
+                                  255, 128, 64])
+        resultado = im.invertida()
+        esperado = pset1.Imagem(3, 3, [255, 205, 155,
+                                       105, 55, 5,
+                                       0, 127, 191])
+        self.assertEqual(resultado, esperado)
+
     def test_imagens_invertidas(self):
         for nome_arquivo in ('mushroom', 'twocats', 'chess'):
             with self.subTest(f=nome_arquivo):
@@ -102,6 +112,40 @@ class TestInvertida(unittest.TestCase):
 
 # Classe para os testes dos filtros:
 class TestFiltros(unittest.TestCase):
+    def test_borrada_1(self):
+        # Teste simples com imagem pequena e kernel 3x3
+        im = pset1.Imagem(3, 3, [0, 0, 0,
+                                 0, 255, 0,
+                                 0, 0, 0])
+        resultado = im.borrada(3)
+        esperado = pset1.Imagem(3, 3, [28, 28, 28,
+                                       28, 28, 28,
+                                       28, 28, 28])
+        self.assertEqual(resultado, esperado)
+
+    def test_borrada_2(self):
+        # Teste scom imagem 9x9 e kernel 7x7
+        im = pset1.Imagem(9, 9, [57, 12, 140, 125, 114, 71, 52, 44, 216,
+                                 16, 15, 47, 111, 119, 13, 101, 214, 112,
+                                 229, 142, 3, 81, 216, 174, 142, 79, 110,
+                                 172, 52, 47, 194, 49, 183, 176, 135, 22,
+                                 235, 63, 193, 40, 150, 185, 98, 35, 23,
+                                 116, 148, 40, 119, 51, 194, 142, 232, 186,
+                                 83, 189, 181, 107, 136, 36, 87, 125, 83,
+                                 236, 194, 138, 112, 166, 28, 117, 16, 161,
+                                 205, 137, 33, 108, 161, 108, 255, 202, 234])
+        resultado = im.borrada(7)
+        esperado = pset1.Imagem(9, 9, [89, 93, 94, 93, 92, 110, 119, 123, 129,
+                                        104, 105, 104, 101, 97, 109, 113, 115, 116,
+                                        110, 108, 109, 106, 104, 113, 119, 121, 122,
+                                        116, 114, 113, 111, 110, 113, 115, 114, 113,
+                                        134, 130, 124, 120, 115, 112, 113, 112, 108,
+                                        152, 144, 137, 132, 122, 120, 124, 125, 123,
+                                        151, 143, 135, 132, 126, 126, 132, 135, 137,
+                                        153, 147, 136, 135, 129, 132, 143, 152, 155,
+                                        150, 145, 133, 136, 134, 140, 158, 170, 178])
+        self.assertEqual(resultado, esperado)
+
     def test_borrada(self):
         for tamanho_kernel in (1, 3, 7):
             for nome_arquivo in ('mushroom', 'twocats', 'chess'):
